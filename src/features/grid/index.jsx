@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import produce from 'immer';
 
 // Number of Rows and Columns for Grid
 const numRows = 25;
@@ -17,6 +18,8 @@ const Grid = () => {
         return generateEmptyGrid();
     });
 
+
+
     return (
         <div style={{
             display: "flex",
@@ -32,6 +35,12 @@ const Grid = () => {
                     rows.map((columns, y) => (
                         <div
                             key={`${x}-${y}`}
+                            onClick={() => {
+                                const newGrid = produce(grid, (gridCopy) => {
+                                    gridCopy[x][y] = grid[x][y] ? 0 : 1;
+                                });
+                                setGrid(newGrid);                                
+                            }}
                             style={{
                                 width: 20,
                                 height: 20,
