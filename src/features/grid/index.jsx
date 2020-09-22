@@ -1,59 +1,11 @@
 import React, { useCallback, useContext, useRef, useState } from 'react';
 import { GridContext, SimulationContext } from '../../context'
 import produce from 'immer';
-
-const operations = [
-    [0, 1],
-    [0, -1],
-    [1, -1],
-    [-1, 1],
-    [1, 1],
-    [-1, -1],
-    [1, 0],
-    [-1, 0]
-];
-
-
+import Buttons from '../buttons'
 
 const Grid = () => {
 
-    const { running, setRunning } = useContext(SimulationContext);
-    const { grid , setGrid, generateEmptyGrid, numCols, numRows } = useContext(GridContext);
-
-    const runningRef = useRef(running);
-    runningRef.current = running;
-
-    const runSimulation = useCallback(() => {
-        if (!runningRef.current) {
-            return;
-        };
-        setGrid((grid) => {
-            return produce(grid, (gridCopy) => {
-                for (let x = 0; x < numRows; x++) {
-                    for (let y= 0; y < numCols; y++) {
-                        let neighbors = 0;
-                        operations.forEach(([xx, yy]) => {
-                            const newX = x + xx;
-                            const newY = y + yy;
-                            if (newX >= 0
-                                && newX < numRows
-                                && newY >= 0
-                                && newY < numCols) {
-                                    neighbors += grid[newX][newY];
-                            };
-                        });
-
-                        if (neighbors < 2 || neighbors > 3) {
-                            gridCopy[x][y] = 0;
-                        } else if (grid[x][y] === 0 && neighbors === 3) {
-                            gridCopy[x][y] = 1;
-                        }
-                    }
-                }
-            })
-        })
-        setTimeout(runSimulation, 100);
-    }, []);
+    const { grid , setGrid, numCols, numRows } = useContext(GridContext);
 
     return (
             <div style={{
@@ -63,29 +15,11 @@ const Grid = () => {
                 marginTop: "20vh"
             }}
             >
-                <div>
-                    <button
-                        onClick={() => {
-                            setRunning(!running);
-                            if (!running) {
-                                runningRef.current = true;
-                                runSimulation();
-                            }
-                        }}
-                        >
-                        {running ? "stop" : "start"}
-                    </button>
-                    <button
-                        onClick={() => {
-                            setGrid(generateEmptyGrid());
-                        }}
-                    >
-                        clear
-                    </button>
-                </div>
+                <Buttons />
                 <div style={{
                     display: "grid",
                     gridTemplateColumns: `repeat(${numCols}, 20px)`,
+                    gridTemplateRows: `repeat(${numRows}, 20px)`,
                 }}>
                     {grid.map((rows, x) =>
                         rows.map((columns, y) => (
