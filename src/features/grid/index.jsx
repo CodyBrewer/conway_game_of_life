@@ -1,9 +1,10 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useContext, useRef, useState } from 'react';
+import SimulationContext from '../../context/simulationContext';
+import GridContext from '../../context/gridContext';
 import produce from 'immer';
 
 // Number of Rows and Columns for Grid
-const numRows = 25;
-const numCols = 25;
+
 
 const operations = [
     [0, 1],
@@ -16,20 +17,12 @@ const operations = [
     [-1, 0]
   ];
 
-const generateEmptyGrid = () => {
-    const rows = [];
-    for (let i = 0; i < numRows; i+=1) {
-        rows.push(Array.from(Array(numCols), () => 0));
-    };
-    return rows;
-};
+
 
 const Grid = () => {
-    const [grid, setGrid] = useState(() => {
-        return generateEmptyGrid();
-    });
-    
-    const [running, setRunning] = useState(false);
+
+    const { running, setRunning } = useContext(SimulationContext);
+    const { grid , setGrid, generateEmptyGrid, numCols, numRows } = useContext(GridContext);
 
     const runningRef = useRef(running);
     runningRef.current = running;
