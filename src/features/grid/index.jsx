@@ -1,10 +1,6 @@
 import React, { useCallback, useContext, useRef, useState } from 'react';
-import SimulationContext from '../../context/simulationContext';
-import GridContext from '../../context/gridContext';
+import { GridContext, SimulationContext } from '../../context'
 import produce from 'immer';
-
-// Number of Rows and Columns for Grid
-
 
 const operations = [
     [0, 1],
@@ -15,7 +11,7 @@ const operations = [
     [-1, -1],
     [1, 0],
     [-1, 0]
-  ];
+];
 
 
 
