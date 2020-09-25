@@ -1,11 +1,19 @@
-import React, { useCallback, useContext, useRef, useState } from 'react';
-import { GridContext, SimulationContext } from '../../context'
+import React, { useContext,} from 'react';
+import { GridContext } from '../../context'
 import produce from 'immer';
-import Buttons from '../buttons'
+import styled from 'styled-components';
+import Buttons from '../buttons';
 
 const Grid = () => {
 
-    const { grid , setGrid, numCols, numRows } = useContext(GridContext);
+    const { grid , setGrid, numCols, numRows } = useContext(GridContext)
+
+    const handleCellSelect = (x, y) => {
+        const newGrid = produce(grid, (gridCopy) => {
+            gridCopy[x][y] = grid[x][y] ? 0 : 1;
+        });
+        setGrid(newGrid);
+    }
 
     return (
             <div style={{
@@ -23,26 +31,35 @@ const Grid = () => {
                 }}>
                     {grid.map((rows, x) =>
                         rows.map((columns, y) => (
-                            <div
-                                key={`${x}-${y}`}
-                                onClick={() => {
-                                    const newGrid = produce(grid, (gridCopy) => {
-                                        gridCopy[x][y] = grid[x][y] ? 0 : 1;
-                                    });
-                                    setGrid(newGrid);                                
-                                }}
-                                style={{
-                                    width: 20,
-                                    height: 20,
-                                    backgroundColor: grid[x][y] ? "blue" : undefined,
-                                    border: "solid 1px black"
-                                }}
-                            />
+                            grid[x][y] === 1
+                                ? <Alive 
+                                    key={`${x}-${y}`}
+                                    onClick={() => {
+                                        handleCellSelect(x, y);
+                                    }}
+                                />
+                                : <Dead 
+                                    key={`${x}-${y}`}
+                                    onClick={() => {
+                                        handleCellSelect(x, y);
+                                    }}
+                                />
                         ))    
                     )}
                 </div>
             </div>
     );
 };
+
+const Dead = styled.div`
+    border: solid 1px black;
+    height: 20;
+    width: 20;
+    background-color: white
+`
+
+const Alive = styled(Dead)`
+    background-color: black
+`
 
 export default Grid;
