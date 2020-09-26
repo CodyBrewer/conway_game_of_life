@@ -74,6 +74,31 @@ const Buttons = () => {
         handlePausePlay();
     }
 
+    const stepper = () => {
+        setGrid((grid) => {
+            return produce(grid, gridCopy => {
+                for (let x = 0; x < numRows; x++) {
+                    for (let y = 0; y < numCols; y++) {
+                        let neighbors = 0
+                        operations.forEach(([xx, yy]) => {
+                            const newX = x + xx
+                            const newY = y + yy
+                            if (newX >= 0 && newX < numRows && newY >= 0 && newY < numCols) {
+                                neighbors += grid[newX][newY]
+                            }
+                        })
+                    if (neighbors < 2 || neighbors > 3) {
+                        gridCopy[x][y] = 0
+                    } else if (grid[x][y] === 0 && neighbors === 3) {
+                        gridCopy[x][y] = 1
+                    }
+                    }
+                }
+            })
+        })
+        setGeneration(prevGen => prevGen + 1)
+    }
+
 
     return (
         <div style={{
@@ -88,6 +113,9 @@ const Buttons = () => {
                 }}
             >
                 clear
+            </button>
+            <button onClick={stepper}>
+                Increase Generation By One
             </button>
             <button 
                 onClick={() => randomGrid()}
