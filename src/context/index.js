@@ -26,7 +26,7 @@ const Store = ({ children }) => {
 
     return (  
         <SimulationContext.Provider value={{ running, setRunning, generation, setGeneration}}>
-            <GridContext.Provider value={{ grid, setGrid, generateEmptyGrid, numCols, numRows }}>
+            <GridContext.Provider value={{ grid, setGrid, generateEmptyGrid, numCols, numRows, setNumCols, setNumRows }}>
                 {children}
             </GridContext.Provider>
         </SimulationContext.Provider>

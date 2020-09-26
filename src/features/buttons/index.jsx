@@ -17,7 +17,7 @@ const operations = [
 const Buttons = () => {
 
     const { running, setRunning, generation, setGeneration } = useContext(SimulationContext);
-    const { grid, setGrid, numRows, numCols, generateEmptyGrid } = useContext(GridContext);
+const { grid, setGrid, numRows, setNumRows, numCols, setNumCols, generateEmptyGrid } = useContext(GridContext);
     const runningRef = useRef(running);
     runningRef.current = running;
 
@@ -99,6 +99,13 @@ const Buttons = () => {
         setGeneration(prevGen => prevGen + 1)
     }
 
+    const handleRowChange = (event) => {
+        setNumRows(event.target.value);
+    }
+
+    const handleColChange = (event) => {
+        setNumCols(event.target.value);
+    }
 
     return (
         <div style={{
@@ -123,6 +130,30 @@ const Buttons = () => {
                 Random
             </button>
             <p>Generations: {generation} </p>
+            <div
+                style={{width: 50, margin: 5}}
+            >
+                <label htmlFor="gridRows">
+                    Rows
+                    <input 
+                        id="gridRows"
+                        name="gridRows"
+                        type="number"
+                        value={numRows}
+                        onChange={handleRowChange}
+                    />
+                </label>
+                <label htmlFor="gridCols">
+                    Columns                
+                    <input
+                        id="gridCols"
+                        name="gridCols"
+                        type="number"
+                        value={numCols}
+                        onChange={handleColChange}
+                    />
+                </label>
+            </div>
         </div>
     )
 };
