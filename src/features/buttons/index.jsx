@@ -16,7 +16,7 @@ const operations = [
 
 const Buttons = () => {
 
-    const { running, setRunning } = useContext(SimulationContext);
+    const { running, setRunning, generation, setGeneration } = useContext(SimulationContext);
     const { grid, setGrid, numRows, numCols, generateEmptyGrid } = useContext(GridContext);
     const runningRef = useRef(running);
     runningRef.current = running;
@@ -50,6 +50,7 @@ const Buttons = () => {
                 }
             })
         })
+        setGeneration(prevGen => prevGen + 1)
         setTimeout(runSimulation, 100);
     }, []);
 
@@ -75,6 +76,7 @@ const Buttons = () => {
             >
                 clear
             </button>
+            <p>Generations: {generation} </p>
         </div>
     )
 };
