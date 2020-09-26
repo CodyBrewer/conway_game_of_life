@@ -62,6 +62,19 @@ const Buttons = () => {
         }
     }
 
+    const randomGrid = () => {
+        setGrid((prevGrid) => {
+            console.log(prevGrid.map((rowArr) => 
+            rowArr.map(() => Math.floor(Math.random() *4) === 1)
+        ))
+            return prevGrid.map((rowArr) => 
+                rowArr.map(() => Math.floor(Math.random() *4) === 1)
+            )
+        })
+        handlePausePlay();
+    }
+
+
     return (
         <div style={{
             display: "flex",
@@ -75,6 +88,11 @@ const Buttons = () => {
                 }}
             >
                 clear
+            </button>
+            <button 
+                onClick={() => randomGrid()}
+            >
+                Random
             </button>
             <p>Generations: {generation} </p>
         </div>
